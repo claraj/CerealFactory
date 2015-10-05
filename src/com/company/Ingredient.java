@@ -2,9 +2,6 @@ package com.company;
 
 import java.util.ArrayList;
 
-/**
- * Created by we4954cp on 10/5/2015.
- */
 public class Ingredient {
 
 
@@ -17,8 +14,6 @@ public class Ingredient {
     Ingredient(String name){
         this.name = name;
     }
-
-
 
     //Price structure - tricky! TODO improve this.
 
@@ -35,6 +30,9 @@ public class Ingredient {
 
     public double getPriceForQuantity(double kilograms) {
 
+        //Look at all the price levels. If this amount of kilos is less than
+        //the current price level, then multiply and return
+        //TODO I don't think this works. Why, and can you fix it?
         for (PriceLevel priceLevel : priceLevels) {
             if (kilograms < priceLevel.upToKilos) {
                 return (kilograms * priceLevel.pricePerKilo);

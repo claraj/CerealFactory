@@ -14,12 +14,14 @@ public class Main {
         ArrayList<Cereal> allCereals = new ArrayList<>();
         ArrayList<Ingredient> allIngredients = new ArrayList<>();
 
+        //Create a Cereal object for each Cereal, and add to an ArrayList
         addTestIngredients(allIngredients);
+        //Create an Ingredient object for each Ingredient, and add to an ArrayList
         addTestCereals(allCereals);
 
         Scanner scanner = new Scanner(System.in);
-        double totalCost = 0;
 
+        //Hashmap for Cereals and number of boxes of that cereal ordered
         HashMap<Cereal, Integer>boxesOfEachCerealOrdered = new HashMap<>();
 
         //For each cereal, ask user for number of boxes ordered
@@ -29,74 +31,81 @@ public class Main {
             boxesOfEachCerealOrdered.put(c, boxes);
         }
 
+        //For every ingredient, figure out how many kilos needed.
+        //For every Ingredient, look at the list of Cereals. How much of that Ingredient is
+        //needed to make that many boxes of that cereal?
+        //e.g. For Rice, you'll need 400g for every box of Rice Crunchies ordered and 200g for every box of Rice Crunchies
         HashMap<Ingredient, Double> kilogramsOfEachIngredient = new HashMap<>();
 
-        for (Ingredient i : allIngredients) {
-            //For each ingredient, how much is needed for each cereal?
+        System.out.println("\n* Calculating amount of each ingredient needed *\n");
+
+        for (Ingredient ingredient : allIngredients) {
 
             double weightOfIngredient = 0;
 
-            System.out.println("Calculating quantities for " + i.name);
+            for (Cereal cereal : allCereals) {
+                //How much of this ingredient in ONE BOX of this cereal?
+                double kilosForOneBoxOfThisCereal = cereal.getQuantityOfIngredient(ingredient);
+                //We need to make how many boxes of this cereal?
+                int boxes = boxesOfEachCerealOrdered.get(cereal);
 
-            for (Cereal c : allCereals) {
-
-                //How much i in c?
-                double howManyKilosForThisCereal = c.getQuantityOfIngredient(i);
-                //We need to make how many boxes?
-                int boxes = boxesOfEachCerealOrdered.get(c);
-
-                double totalWeightForAllBoxesOfThisCereal = howManyKilosForThisCereal * boxes;
+                double totalWeightForAllBoxesOfThisCereal = kilosForOneBoxOfThisCereal * boxes;
 
                 weightOfIngredient += totalWeightForAllBoxesOfThisCereal;
 
             }
 
-            kilogramsOfEachIngredient.put(i, weightOfIngredient);
+            kilogramsOfEachIngredient.put(ingredient, weightOfIngredient);
 
-            System.out.println("The ingredient " + i.name + " requires " + weightOfIngredient + " kilos to make all the cereals in this order");
-
+            System.out.println("You will need to buy " + weightOfIngredient + " kilos of " + ingredient.name + " to make all the cereals in this order");
 
         }
 
-        //For ever
+        //Now we know the weight of each ingredient needed.
+        //Add up the total cost of all of the ingredients needed.
+        //This is where the price levels are needed.
+
+        System.out.println("\n* Calculating price for each ingredient *\n");
 
         double totalCostOfAllIngredients = 0;
 
         for (Ingredient i : kilogramsOfEachIngredient.keySet()) {
 
-
             double kilogramsOfThisIngredient = kilogramsOfEachIngredient.get(i);
             double price = i.getPriceForQuantity(kilogramsOfThisIngredient);
             totalCostOfAllIngredients += price;
 
-            System.out.println("You will need to buy " + kilogramsOfThisIngredient  + " kilograms of " + i.name + " at a cost of $" + price);
+            System.out.println(kilogramsOfThisIngredient  + " kilograms of " + i.name + " will cost $" + price);
 
         }
 
-        System.out.println("The ingredients will cost " + totalCostOfAllIngredients);
+
+        System.out.println("\n* Grand total *\n");
+
+        System.out.println("All of the ingredients will cost $" + totalCostOfAllIngredients);
 
     }
 
     private static void addTestIngredients(ArrayList<Ingredient> allIngredients) {
 
-        rice = new Ingredient("Rice");
+        rice = new Ingredient("rice");
         rice.addPriceLevel(100, 0.50);
         rice.addPriceLevel(500, 0.43);
         rice.addDefaultPriceLevel(0.30);
         allIngredients.add(rice);
 
-        corn = new Ingredient("Corn");
+        corn = new Ingredient("corn");
         corn.addPriceLevel(80, 0.50);
         corn.addDefaultPriceLevel(0.41);
         allIngredients.add(corn);
 
 
-        sugar = new Ingredient("Sugar");
+        sugar = new Ingredient("sugar");
         sugar.addPriceLevel(200, 1.15);
         sugar.addDefaultPriceLevel(0.95);
         allIngredients.add(sugar);
 
-        salt = new Ingredient("Salt");
+        salt = new Ingredient("salt");
         salt.addDefaultPriceLevel(0.70);
         allIngredients.add(salt);
 

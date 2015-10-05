@@ -22,22 +22,8 @@ public class Cereal {
     }
 
 
-//
-//    //in your main method
-//    // double riceAmount = c.getQuantityofIngredient("Rice");
-//
-//
-//    public double getQuantityOfIngredient(String ingredient){
-//        if (ingredients.containsKey(ingredient)) {
-//            return ingredients.get(ingredient);
-//        } else {
-//            return 0;
-//        }
-//    }
-
-
-
     public String getName() {
+
         return name;
     }
 }
