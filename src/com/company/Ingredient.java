@@ -49,7 +49,7 @@ public class Ingredient {
     }
 
 
-    //Another class!
+    //Another class! Matches pricelevels (e.g. up to 500 kilos) and price per kilo (e.g. $0.5 per kilo)
     class PriceLevel {
         PriceLevel(double upToKilos, double pricePerKilo) {
             this.upToKilos = upToKilos;
